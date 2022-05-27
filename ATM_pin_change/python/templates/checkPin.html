@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM SYStem</title>
+    <style>
+        body{
+         align-content: center;   
+        }
+        a{
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+        div{
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+        img{
+            height: auto;
+            width: auto;
+            border-radius: 10%; 
+        }
+        #label1{
+            color:red;
+        }
+        input:valid {
+            color: green;
+        }
+        input:invalid {
+            color: red;
+        }
+    input{
+        width: 30%;
+	    border: none;
+	    border-radius: 5px;
+	    text-align: center;
+	    font-family: arimo;
+	    font-size: 1.2rem;
+	    background: #eef2f3;
+    }
+    #but{
+        width: 30%;
+        height: 30%;
+	    border: none;
+	    border-radius: 5px;
+	    text-align: center;
+	    font-family: arimo;
+	    font-size: 1.2rem;
+	    background: #eef2f3;  
+    }
+    #but:hover{
+        width: 30%;
+	    border: none;
+	    border-radius: 5px;
+	    text-align: center;
+	    font-family: arimo;
+	    font-size: 1.2rem;
+	    background: #eef2f3;  
+    }
+    </style>
+</head>
+<body>
+    <div id="body">
+    <div id="main">
+    <h1 id="label1">LOGIN SYSTEM</h1>
+    <form action="" id="form1">
+        <input id="numb1" type="password" minlength="4" maxlength="4" placeholder="Enter Pin" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required />
+    <br>
+    <br>
+        <input id = "but" type="button" value="SUBMIT" onclick="return verify();">
+    </form>
+    <h2 id = "display"></h2>
+    <h2 id = "display2"></h2>
+    <a href="/">HOME</a>
+    </div>
+    
+    </div>
+</body>
+<script>
+    function verify(){
+        let x = document.getElementById("numb1").value;
+        document.getElementById("numb1").value = "";
+        if(x.length == 4){
+            var ft =fetch('/checkpin', {
+            method: 'POST', // or 'PUT'
+			body:x
+			})
+		.then(response => response.json())
+		.then(data => {
+			var ar_data = data['data'];
+         console.log(ar_data);
+         if(ar_data == 3){
+            document.getElementById("display").innerHTML ='Your Card is blocked due to mutliple atempts';
+            document.getElementById("display2").innerHTML ='\To change Pin ';
+            var aref = document.createElement("a");
+            aref.setAttribute("href","/check");
+            aref.innerHTML =" clickMe"
+            document.getElementById("display2").appendChild(aref)
+            //document.getElementById("display").innerHTML ='to change pin';
+         }
+        else if(ar_data == 4){
+            console.log("remove");
+            document.getElementById("main").remove();
+            var img = document.createElement("img");
+            img.setAttribute('src',"{{ url_for('static', filename = 'images/atmui.png') }}");
+            var br= document.createElement("br");
+            var a= document.createElement("a");
+            a.setAttribute('href',"/");
+            a.innerHTML = "HOME"
+            document.getElementById("body").appendChild(img)
+            document.getElementById("body").appendChild(br)
+            document.getElementById("body").appendChild(a)
+         }
+         else if(ar_data == 5){
+            alert("Authentication Failled");
+            window.location = "/";
+         }
+         else{
+            document.getElementById("display").innerHTML ='Invalid Pin Try Again';
+         }
+		})
+		.catch((error) => {
+  			console.error('Error:', error);
+		});
+        }
+    // else{
+    //     document.getElementById("display").innerHTML ='Maximum Length Should be 4 Digit';
+    // }
+
+        }
+    
+
+</script>
+</html>

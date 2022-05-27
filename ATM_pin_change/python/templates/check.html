@@ -1,0 +1,64 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM SYStem</title>
+
+    <style>
+        body{
+         align-content: center;   
+         color: azure;
+        }
+        div{
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+        img{
+            height: auto;
+            width: auto;
+            border-radius: 20%;  
+        }
+        #lab1{
+            color:red;
+        }
+    </style>
+</head>
+<body>
+    <div>
+    <h1 id = "lab1">PLACE YOUR FINGER</h1>
+    <img id= "img" src="{{ url_for('static', filename = 'images/scan4.gif') }}">
+    <h1></h1>
+    <h1 id= "display"></h1>
+    <a href="/"></a>
+    <a href="/">HOME</a>
+    </div>
+</body>
+<script>
+
+    setInterval(function load(){
+      var ft =fetch('/check', {
+            method: 'POST', // or 'PUT'
+			body:"post"
+			})
+		.then(response => response.json())
+		.then(data => {
+			var ar_data = data['data'];
+         console.log(ar_data)
+		 if (ar_data == 5){
+            alert("Authentication Failled");
+            window.location = "/";
+         }
+		 if (ar_data == 4){
+            window.location = "/otp";
+         }
+		})
+		.catch((error) => {
+  			console.error('Error:', error);
+		});	
+    }
+, 2000);
+
+</script>
+</html>

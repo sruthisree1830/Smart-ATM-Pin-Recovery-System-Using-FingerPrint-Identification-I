@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM SYStem</title>
+    <style>
+        body{
+         align-content: center;   
+        }
+        div{
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+        img{
+            height: 15%;
+            width: 15%;
+            border-radius: 20%;  
+        }
+        #label1{
+            color:red;
+        }
+        input:valid {
+            color: green;
+        }
+        input:invalid {
+            color: red;
+        }
+    input{
+        width: 30%;
+	    border: none;
+	    border-radius: 5px;
+	    text-align: center;
+	    font-family: arimo;
+	    font-size: 1.2rem;
+	    background: #eef2f3;
+    }
+    #but{
+        width: 30%;
+        height: 30%;
+	    border: none;
+	    border-radius: 5px;
+	    text-align: center;
+	    font-family: arimo;
+	    font-size: 1.2rem;
+	    background: #eef2f3;  
+    }
+    #but:hover{
+        width: 30%;
+	    border: none;
+	    border-radius: 5px;
+	    text-align: center;
+	    font-family: arimo;
+	    font-size: 1.2rem;
+	    background: #eef2f3;  
+    }
+    </style>
+</head>
+<body>
+    <div>
+    <h1 id="label1">RESET PIN</h1>
+    <form action="" id="form1">
+        <input id="numb1" type="password" minlength="4" maxlength="4" placeholder="Enter Pin" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required />
+    <br>
+    <br>
+    <input id="numb2" type="password"  minlength="4" maxlength="4" placeholder="Confirm Pin" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required />
+    <br>
+    <br>
+        <input id = "but" type="button" value="CONFIRM" onclick="return verify();">
+    </form>
+    <h3 id = "display"></h3>
+    <a href="/">HOME</a>
+    </div>
+</body>
+<script>
+    function verify(){
+        let x = document.getElementById("numb1").value;
+        document.getElementById("numb1").value = "";
+        let y = document.getElementById("numb2").value;
+        document.getElementById("numb2").value = "";
+        console.log(x,y);
+        if(x.length == 4 && y.length == 4){
+        if (x != y){
+            document.getElementById("display").innerHTML ='Invalid Pin Enter Again';
+        }
+        else{
+        var ft =fetch('/change', {method: 'POST', body:x+","+y});
+        document.getElementById("display").innerHTML ='';
+        window.location = "/";
+        window.reload()
+        }
+        }
+    else{
+        document.getElementById("display").innerHTML ='Maximum Length Should be 4 Digit';
+    }
+
+        }
+    
+
+</script>
+</html>
